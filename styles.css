@@ -1,0 +1,19 @@
+body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+#container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0px;
+    width: 875px;
+
+}
+
+button {
+    width: 875px;
+}
