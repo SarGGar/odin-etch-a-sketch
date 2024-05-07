@@ -1,8 +1,18 @@
+RANDOMIZE_COLOR = false;
+
 const container = document.querySelector('#container');
 const gridWidth = window.getComputedStyle(container).getPropertyValue("width").replace("px","");
 const gridGap = window.getComputedStyle(container).getPropertyValue("gap").replace("px","");
 
 const resizeButton = document.querySelector(".resize")
+
+
+let gridElementCounter = {}
+let gridElementColor = {}
+
+
+const randomBetween = (min, max) => min +Math.floor(Math.random()*(max-min+1));
+
 
 function createGrid(n) {
     const l = calculateGridSquareSize(n)
@@ -13,6 +23,14 @@ function createGrid(n) {
         div.style.height=`${l}px`;
         div.id=`square-${i}`;
         container.appendChild(div);
+
+        gridElementCounter[div.id]=0;
+
+        const r = randomBetween(0,255);
+        const g = randomBetween(0,255);
+        const b = randomBetween(0,255);
+        const rgb = `rgb(${r},${g},${b})`;
+        gridElementColor[div.id]=rgb;
     }
 } 
 
@@ -30,10 +48,17 @@ container.addEventListener('mouseover', (event) => {
     let target = event.target;
     let squareId = target.id;
     if (squareId.split('-')[0]=='square') {
+        gridElementCounter[squareId]++
+        const color = gridElementColor[squareId]
         let selectorString = '#'+squareId
 
         const pointerSquare = document.querySelector(selectorString)
-        pointerSquare.style.backgroundColor="red"
+        if (RANDOMIZE_COLOR) {
+            pointerSquare.style.backgroundColor=color
+        } else {
+            pointerSquare.style.backgroundColor="red"
+        }
+        pointerSquare.style.opacity = Math.min(gridElementCounter[squareId]/10, 1.0)
     }
 })
 
